@@ -1,0 +1,179 @@
+/* Set the height of the message container */
+#message-container {
+  height: 300px;
+  overflow-y: scroll;
+  padding-right: 10px;
+}
+
+#message-container::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+  border-radius: 15pt;
+}
+
+#message-container::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 15pt;
+}
+
+/* Remove the border radius of the message input field */
+#message {
+  border-radius: 0;
+}
+
+/* Style the "Sign up" and "Cancel" buttons as links */
+#signup-btn,
+#cancel-btn {
+  text-decoration: underline;
+}
+
+/* Hide the chat section until the user logs in */
+#chat-section {
+  display: none;
+}
+
+/* Show the chat section when the user logs in */
+#chat-section.active {
+  display: block;
+}
+
+/* Style the messages */
+.message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.message .username {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.message .timestamp {
+  font-size: 12px;
+  color: gray;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.sent {
+  background-color: #cfe2ff;
+  border-color: #b6d4fe;
+}
+
+.received {
+  background-color: #f1f0f0;
+  color: #000;
+  align-self: flex-start;
+}
+
+/* Style the sign out button */
+#signout-btn {
+  margin-left: 10px;
+}
+
+/* Style the error message */
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+  
+  #message-container::-webkit-scrollbar {
+    width: 8px;
+    background-color: #f5f5f5;
+    border-radius: 15pt;
+  }
+  
+  #message-container::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 15pt;
+  }
+
+  /* Style the login and sign up forms */
+  #login-section,
+  #signup-section {
+    width: 100%;
+  }
+
+  /* Add a bit of padding to the buttons and form fields */
+  .btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  /* Remove the animation from the login and sign-up forms */
+  #login-section,
+  #signup-section {
+    animation: none;
+  }
+
+  /* Increase the font size of the messages */
+  .message {
+    font-size: 14px;
+  }
+  
+  /* Adjust styles for better mobile layout */
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .card {
+    border-radius: 0;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  #message-container {
+  height: 250px;
+  }
+  
+  #username {
+  font-size: 16px;
+  }
+  
+  #message,
+  #clear-chat-btn,
+  #message-form .btn-primary {
+  font-size: 14px;
+  padding: 8px 16px;
+  }
+  
+  #signout-btn {
+  margin-left: 0;
+  }
+  
+  .footer {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  /* Adjust styles for smaller message cards */
+  .message {
+  padding: 8px;
+  }
+  
+  .message .username {
+  font-size: 14px;
+  }
+  
+  .message .timestamp {
+  font-size: 10px;
+  margin-top: 3px;
+  }
+
