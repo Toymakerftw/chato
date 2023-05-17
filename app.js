@@ -130,6 +130,8 @@ if (user) {
 
       messageContainer.appendChild(messageElement);
     });
+      // Set initial scroll position to bottom
+      messageContainer.scrollTop = messageContainer.scrollHeight;
   });
 
     // Hide login and signup buttons after login
