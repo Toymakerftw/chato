@@ -21,12 +21,6 @@
   border-radius: 0;
 }
 
-/* Style the "Sign up" and "Cancel" buttons as links */
-#signup-btn,
-#cancel-btn {
-  text-decoration: underline;
-}
-
 /* Hide the chat section until the user logs in */
 #chat-section {
   display: none;
@@ -77,6 +71,26 @@
   color: red;
   margin-top: 10px;
 }
+
+/* Style the login and signup buttons */
+#login-section .btn,
+#signup-section .btn {
+  margin-top: 10px;
+}
+
+/* Add a gap between the login and signup buttons */
+#login-section .btn + .btn,
+#signup-section .btn + .btn {
+  margin-top: 5px;
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 576px) {
+  /* Set the height of the message container */
+  #message-container {
+    height: 550px;
+    overflow-y: scroll;
+  }
   
   #message-container::-webkit-scrollbar {
     width: 8px;
@@ -157,12 +171,6 @@
   margin-left: 0;
   }
   
-  .footer {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  }
-  
   /* Adjust styles for smaller message cards */
   .message {
   padding: 8px;
@@ -175,5 +183,6 @@
   .message .timestamp {
   font-size: 10px;
   margin-top: 3px;
+  }
   }
 
