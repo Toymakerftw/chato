@@ -32,17 +32,13 @@ const messageForm = document.getElementById('message-form');
 const messageInput = document.getElementById('message');
 const signupBtn = document.getElementById('signup-btn');
 const signoutBtn = document.getElementById('signout-btn');
+const clearChatBtn = document.getElementById('clear-chat-btn');
 
 // Hide signup section initially
 signupSection.style.display = 'none';
 
-// Show signup section when signup button is clicked
-signupBtn.addEventListener('click', () => {
-loginForm.style.display = 'none';
-signupSection.style.display = 'block';
-signupBtn.style.display = 'none';
-document.querySelector('.card-title').style.display = 'none';
-});
+// Commonly used DOM elements
+const cardTitle = document.querySelector('.card-title');
 
 // User login event
 loginForm.addEventListener('submit', async (event) => {
@@ -93,46 +89,31 @@ cancelBtn.addEventListener('click', () => {
   signupSection.style.display = 'none';
   signupForm.reset();
   signupBtn.style.display = 'block';
-  document.querySelector('.card-title').style.display = 'block';
+  cardTitle.style.display = 'block';
 });
 
 // Auth state change listener
-auth.onAuthStateChanged(async (user) => {
-if (user) {
-  // User is signed in
-  const { uid, displayName, email } = user;
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    // User is signed in
+    const { displayName, email } = user;
 
-  chatSection.style.display = 'block';
-  usernameSpan.textContent = displayName || email;
+    chatSection.style.display = 'block';
+    usernameSpan.textContent = displayName || email;
 
-  // Hide card title after signing in
-  document.querySelector('.card-title').style.display = 'none';
+    // Hide card title after signing in
+    cardTitle.style.display = 'none';
 
-  // Load messages
-  firestore.collection('messages').orderBy('timestamp').onSnapshot((snapshot) => {
-    messageContainer.innerHTML = '';
-    snapshot.forEach((doc) => {
-      const { message, sender, timestamp } = doc.data();
-
-      const messageElement = document.createElement('div');
-      messageElement.classList.add('message');
-      if (sender === displayName || sender === email) {
-        messageElement.classList.add('sent');
-      } else {
-        messageElement.classList.add('received');
+    // Load messages
+    let throttledUpdateMessages = null;
+    firestore.collection('messages').orderBy('timestamp').onSnapshot((snapshot) => {
+      if (!throttledUpdateMessages) {
+        throttledUpdateMessages = setTimeout(() => {
+          updateMessages(snapshot, displayName || email);
+          throttledUpdateMessages = null;
+        }, 200);
       }
-      messageElement.textContent = `${sender}: ${message}`;
-
-      const timestampElement = document.createElement('div');
-      timestampElement.classList.add('timestamp');
-      timestampElement.textContent = timestamp.toDate().toLocaleString();
-      messageElement.appendChild(timestampElement);
-
-      messageContainer.appendChild(messageElement);
     });
-      // Set initial scroll position to bottom
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-  });
 
     // Hide login and signup buttons after login
     loginForm.style.display = 'none';
@@ -144,7 +125,7 @@ if (user) {
         await auth.signOut();
         chatSection.style.display = 'none';
         loginForm.style.display = 'block';
-        document.querySelector('.card-title').style.display = 'block';
+        cardTitle.style.display = 'block';
         alert('You have been signed out.');
       } catch (error) {
         alert(error.message);
@@ -160,7 +141,7 @@ if (user) {
         await firestore.collection('messages').add({
           message,
           sender: displayName || email,
-          timestamp: firebase.firestore.Timestamp.now()
+          timestamp: firebase.firestore.Timestamp.now(),
         });
 
         messageInput.value = '';
@@ -178,23 +159,51 @@ if (user) {
   }
 });
 
-// Clear the message container and delete messages from Firestore when the "Clear chat" button is clicked
-document.getElementById('clear-chat-btn').addEventListener('click', async function() {
-try {
-  // Delete all messages from Firestore
-  const snapshot = await firestore.collection('messages').get();
-  const batch = firestore.batch();
+// Update messages in the message container
+function updateMessages(snapshot, displayName) {
+  messageContainer.innerHTML = '';
 
   snapshot.forEach((doc) => {
-    batch.delete(doc.ref);
+    const { message, sender, timestamp } = doc.data();
+
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');
+    if (sender === displayName) {
+      messageElement.classList.add('sent');
+    } else {
+      messageElement.classList.add('received');
+    }
+    messageElement.textContent = `${sender}: ${message}`;
+
+    const timestampElement = document.createElement('div');
+    timestampElement.classList.add('timestamp');
+    timestampElement.textContent = timestamp.toDate().toLocaleString();
+    messageElement.appendChild(timestampElement);
+
+    messageContainer.appendChild(messageElement);
   });
 
-  await batch.commit();
-  console.log('Chat cleared successfully.');
-
-  // Clear the message container
-  document.getElementById('message-container').innerHTML = '';
-} catch (error) {
-  alert(error.message);
+  // Set initial scroll position to bottom
+  messageContainer.scrollTop = messageContainer.scrollHeight;
 }
+
+// Clear the message container and delete messages from Firestore when the "Clear chat" button is clicked
+clearChatBtn.addEventListener('click', async function () {
+  try {
+    // Delete all messages from Firestore
+    const snapshot = await firestore.collection('messages').get();
+    const batch = firestore.batch();
+
+    snapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    console.log('Chat cleared successfully.');
+
+    // Clear the message container
+    messageContainer.innerHTML = '';
+  } catch (error) {
+    alert(error.message);
+  }
 });
