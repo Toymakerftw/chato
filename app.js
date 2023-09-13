@@ -194,6 +194,10 @@ function updateMessages(snapshot, displayName) {
     messageElement.appendChild(timestampElement);
 
     messageContainer.appendChild(messageElement);
+
+        // Play notification chime sound
+        const notificationSound = document.getElementById('notification-sound');
+        notificationSound.play();
   });
 
   // Set initial scroll position to bottom
