@@ -168,25 +168,10 @@ function updateMessages(snapshot, displayName) {
 
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
-
     if (sender === displayName) {
       messageElement.classList.add('sent');
     } else {
       messageElement.classList.add('received');
-
-      // Play notification chime sound only for incoming messages
-      const notificationSound = document.getElementById('notification-sound');
-      notificationSound.play();
-
-      // Display a toast notification for the received message
-      Toastify({
-        text: `${sender}: ${message}`,
-        duration: 5000, // Display for 5 seconds
-        close: true,
-        gravity: 'top', // You can adjust the notification position
-        position: 'right',
-        backgroundColor: 'blue', // You can customize the notification style
-      }).showToast();
     }
     
     // Create a span element for the sender's name with bold formatting
@@ -209,6 +194,10 @@ function updateMessages(snapshot, displayName) {
     messageElement.appendChild(timestampElement);
 
     messageContainer.appendChild(messageElement);
+
+        // Play notification chime sound
+        const notificationSound = document.getElementById('notification-sound');
+        notificationSound.play();
   });
 
   // Set initial scroll position to bottom
