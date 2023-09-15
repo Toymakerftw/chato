@@ -40,6 +40,25 @@ signupSection.style.display = 'none';
 // Commonly used DOM elements
 const cardTitle = document.querySelector('.card-title');
 
+// Show the signup section when the "Sign Up" button is clicked
+signupBtn.addEventListener('click', () => {
+  loginForm.style.display = 'none';
+  signupSection.style.display = 'block';
+});
+
+// Add an event listener to the "Sign Up" button inside the signup section
+document.getElementById('signup-btn2').addEventListener('click', () => {
+  // Hide the signup section
+  signupSection.style.display = 'none';
+  loginSection.style.display = 'none';
+});
+
+// Add an event listener to the "Cancel" button inside the signup section (if needed)
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  // Hide the signup section
+  signupSection.style.display = 'none';
+});
+
 // User login event
 loginForm.addEventListener('submit', async (event) => {
   event.preventDefault();
